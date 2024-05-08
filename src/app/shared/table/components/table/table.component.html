@@ -1,0 +1,82 @@
+<ng-container *ngIf="columnsToFilter.length > 0">
+  <mat-form-field *ngFor="let item of columnsToFilter">
+    <mat-select
+      [placeholder]="item.placeholder"
+      (valueChange)="applyFilter($event, item.column)"
+    >
+      <mat-option></mat-option>
+      <mat-option *ngFor="let option of item.options" [value]="option">
+        {{ option }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</ng-container>
+
+<mat-form-field *ngIf="tableConfig?.showFilter">
+  <mat-label>Buscador</mat-label>
+  <input
+    matInput
+    (keyup)="applyFilter(input.value)"
+    placeholder="Buscar por nombre "
+    #input
+  />
+</mat-form-field>
+
+<table mat-table #table [dataSource]="dataSource">
+  <!-- Checkbox Column -->
+  <ng-container matColumnDef="select">
+    <th mat-header-cell *matHeaderCellDef>
+      <mat-checkbox
+        (change)="$event ? toggleAllRows() : null"
+        [checked]="selection.hasValue() && isAllSelected()"
+        [indeterminate]="selection.hasValue() && !isAllSelected()"
+        [aria-label]="checkboxLabel()"
+      >
+      </mat-checkbox>
+    </th>
+    <td mat-cell *matCellDef="let row">
+      <mat-checkbox
+        (click)="$event.stopPropagation()"
+        (change)="$event ? selection.toggle(row) : null; onSelect()"
+        [checked]="selection.isSelected(row)"
+        [aria-label]="checkboxLabel(row)"
+      >
+      </mat-checkbox>
+    </td>
+  </ng-container>
+
+  <!-- Actions Column -->
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef>Actions</th>
+    <td mat-cell *matCellDef="let row">
+      <button (click)="onView(row)">Consultar</button>
+      <!-- <button (click)="onDelete(row)">Delete</button> -->
+    </td>
+  </ng-container>
+
+  <ng-container *ngFor="let column of tableColumns" [matColumnDef]="column.def">
+    <th mat-header-cell *matHeaderCellDef>{{ column.label }}</th>
+    <td mat-cell *matCellDef="let row">{{ row | columnValue : column }}</td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="tableDisplayColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: tableDisplayColumns"></tr>
+
+  <!-- Row shown when there is no matching data. -->
+  <tr class="mat-row" *matNoDataRow>
+    <td class="mat-cell" [colSpan]="tableDisplayColumns.length">
+      No hay datos que coincidan con el dato introducido "{{
+        currentFilterValue
+      }}"
+    </td>
+  </tr>
+</table>
+
+<ng-container *ngIf="tableConfig?.isPaginable">
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons
+    aria-label="Select page of periodic elements"
+  >
+  </mat-paginator>
+</ng-container>

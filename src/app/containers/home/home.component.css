@@ -1,0 +1,31 @@
+/* Estilos para el contenedor principal */
+.welcome-container {
+  text-align: center;
+  margin-top: 50px;
+}
+
+/* Estilos para el título */
+.welcome-header {
+  font-size: 24px;
+  color: #333;
+}
+
+/* Estilos para el mensaje de bienvenida */
+.welcome-message {
+  font-size: 16px;
+  color: #666;
+}
+
+/* Estilos para la tarjeta de bienvenida */
+.welcome-card {
+  max-width: 400px;
+  margin: 0 auto;
+  margin-bottom: 20px; /* Espacio entre la tarjeta y el nombre del autor */
+}
+
+/* Estilos para el nombre del autor */
+.author-name {
+  font-size: 14px;
+  color: #888;
+  margin-top: 10px; /* Espacio entre la tarjeta y el nombre del autor */
+}

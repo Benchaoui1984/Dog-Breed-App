@@ -1,0 +1,9 @@
+<section>
+  <app-table
+    [data]="tableData$ | async"
+    [columns]="tableColumns"
+    [config]="tableConfig"
+    (select)="onSelect($event)"
+    (action)="onTableAction($event)"
+  ></app-table>
+</section>
